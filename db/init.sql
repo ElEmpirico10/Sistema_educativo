@@ -1,3 +1,6 @@
+
+
+--en proseso de mejoras
 CREATE TABLE Tb_rol (
     id_rol SERIAL PRIMARY KEY,
     nombre VARCHAR(30)
@@ -6,7 +9,7 @@ CREATE TABLE Tb_rol (
 CREATE TABLE Tb_usuario (
     id_usuario SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
-    contraseña VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
     id_rol INT,
     FOREIGN KEY (id_rol) REFERENCES Tb_rol(id_rol)
