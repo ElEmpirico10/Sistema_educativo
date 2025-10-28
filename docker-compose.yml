@@ -30,7 +30,6 @@ services:
       - backend
     command: npm run dev -- --host
 
-
   db:
     image: postgres:15
     container_name: softvision-db
@@ -45,5 +44,21 @@ services:
       - ./db:/docker-entrypoint-initdb.d
       - pgdata:/var/lib/postgresql/data
 
+  pgadmin:
+    image: dpage/pgadmin4:7
+    container_name: softvision-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@softvision.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmindata:/var/lib/pgadmin
+
 volumes:
   pgdata:
+  pgadmindata:
+
