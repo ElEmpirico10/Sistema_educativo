@@ -1,6 +1,6 @@
 
 
---en proseso de mejoras
+-- en proceso de mejoras
 CREATE TABLE Tb_rol (
     id_rol SERIAL PRIMARY KEY,
     nombre VARCHAR(30)
@@ -8,10 +8,15 @@ CREATE TABLE Tb_rol (
 
 CREATE TABLE Tb_usuario (
     id_usuario SERIAL PRIMARY KEY,
-    email VARCHAR(100) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    email_verified_at TIMESTAMP DEFAULT NULL
     contrasena VARCHAR(255) NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
     id_rol INT,
+    remember_token VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_rol) REFERENCES Tb_rol(id_rol)
 );
 
@@ -68,6 +73,89 @@ CREATE TABLE Tb_padre_familia (
     id_usuario INT,
     FOREIGN KEY (id_usuario) REFERENCES Tb_usuario(id_usuario)
 );
+
+
+
+-- Tablas de Laravel
+CREATE TABLE migrations (
+    id SERIAL PRIMARY KEY,
+    migration VARCHAR(255) NOT NULL,
+    batch INT NOT NULL
+);
+
+CREATE TABLE cache (
+    key VARCHAR(255) PRIMARY KEY,
+    value TEXT NOT NULL,
+    expiration INT NOT NULL
+);
+
+CREATE TABLE cache_locks (
+    key VARCHAR(255) PRIMARY KEY,
+    owner VARCHAR(255) NOT NULL,
+    expiration INT NOT NULL
+);
+
+CREATE TABLE failed_jobs (
+    id BIGSERIAL PRIMARY KEY,
+    uuid VARCHAR(255) NOT NULL UNIQUE,
+    connection TEXT NOT NULL,
+    queue TEXT NOT NULL,
+    payload TEXT NOT NULL,
+    exception TEXT NOT NULL,
+    failed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE jobs (
+    id BIGSERIAL PRIMARY KEY,
+    queue VARCHAR(255) NOT NULL,
+    payload TEXT NOT NULL,
+    attempts SMALLINT NOT NULL,
+    reserved_at INT,
+    available_at INT NOT NULL,
+    created_at INT NOT NULL
+);
+
+CREATE TABLE job_batches (
+    id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    total_jobs INT NOT NULL,
+    pending_jobs INT NOT NULL,
+    failed_jobs INT NOT NULL,
+    failed_job_ids TEXT NOT NULL,
+    options TEXT,
+    cancelled_at INT,
+    created_at INT NOT NULL,
+    finished_at INT
+);
+
+CREATE TABLE password_reset_tokens (
+    email VARCHAR(255) PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP
+);
+
+CREATE TABLE personal_access_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    tokenable_type VARCHAR(255) NOT NULL,
+    tokenable_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    token VARCHAR(64) NOT NULL UNIQUE,
+    abilities TEXT,
+    last_used_at TIMESTAMP,
+    expires_at TIMESTAMP,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE sessions (
+    id VARCHAR(255) PRIMARY KEY,
+    user_id BIGINT,
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    payload TEXT NOT NULL,
+    last_activity INT
+);
+-- fin de las tablas de Laravel
 
 CREATE TYPE estado_asistencia AS ENUM ('presente', 'excusa', 'ausente');
 
